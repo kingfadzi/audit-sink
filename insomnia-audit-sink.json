@@ -1,0 +1,391 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-08-29T21:17:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_health",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339020000,
+      "created": 1693339020000,
+      "url": "{{ _.base_url }}/audit/health",
+      "name": "Health Check",
+      "description": "Basic health check endpoint",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339020000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_ingest_event",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339030000,
+      "created": 1693339030000,
+      "url": "{{ _.base_url }}/audit/events",
+      "name": "Ingest Audit Event",
+      "description": "Create/ingest a new audit event",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"occurredAt\": \"2025-08-29T17:00:00Z\",\n  \"action\": \"USER_LOGIN\",\n  \"outcome\": \"SUCCESS\",\n  \"subjectType\": \"user\",\n  \"subjectId\": \"user123\",\n  \"actorId\": \"user123\",\n  \"actorType\": \"USER\",\n  \"tenantId\": \"tenant_abc\",\n  \"channel\": \"web\",\n  \"ip\": \"192.168.1.100\",\n  \"userAgent\": \"Mozilla/5.0\",\n  \"correlationId\": \"corr-123\",\n  \"traceId\": \"trace-456\",\n  \"appId\": \"myapp\",\n  \"args\": {\n    \"username\": \"john.doe\",\n    \"loginMethod\": \"password\"\n  },\n  \"result\": {\n    \"sessionId\": \"sess-789\",\n    \"expiresAt\": \"2025-08-29T18:00:00Z\"\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339010000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_all_events",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339040000,
+      "created": 1693339040000,
+      "url": "{{ _.base_url }}/audit/events",
+      "name": "Get All Events (Paginated)",
+      "description": "Get paginated list of all audit events",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "page",
+          "value": "0",
+          "description": "Page number (0-based)"
+        },
+        {
+          "name": "size",
+          "value": "10",
+          "description": "Number of items per page"
+        },
+        {
+          "name": "sortBy",
+          "value": "occurred_at_utc",
+          "description": "Sort field (occurred_at_utc, action, outcome, etc.)"
+        },
+        {
+          "name": "sortOrder",
+          "value": "desc",
+          "description": "Sort order (asc or desc)"
+        }
+      ],
+      "headers": [
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339000000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_get_event_by_id",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339050000,
+      "created": 1693339050000,
+      "url": "{{ _.base_url }}/audit/events/2b016d73-5ff2-4e58-9c19-f75ccd4fac21",
+      "name": "Get Event by ID",
+      "description": "Get specific audit event by UUID. Replace the ID in the URL with an actual event ID from your data.",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693338990000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_search_events_basic",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339060000,
+      "created": 1693339060000,
+      "url": "{{ _.base_url }}/audit/events/search",
+      "name": "Search Events - Basic Filters",
+      "description": "Search audit events with basic filters",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "outcome",
+          "value": "SUCCESS",
+          "description": "Filter by outcome (SUCCESS, FAILURE, etc.)"
+        },
+        {
+          "name": "action",
+          "value": "",
+          "description": "Filter by action type",
+          "disabled": true
+        },
+        {
+          "name": "page",
+          "value": "0",
+          "description": "Page number"
+        },
+        {
+          "name": "size",
+          "value": "5",
+          "description": "Items per page"
+        }
+      ],
+      "headers": [
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693338980000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_search_events_advanced",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339070000,
+      "created": 1693339070000,
+      "url": "{{ _.base_url }}/audit/events/search",
+      "name": "Search Events - Advanced Filters",
+      "description": "Search audit events with multiple advanced filters",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "tenantId",
+          "value": "",
+          "description": "Filter by tenant ID",
+          "disabled": true
+        },
+        {
+          "name": "actorId",
+          "value": "unknown",
+          "description": "Filter by actor ID"
+        },
+        {
+          "name": "subjectId",
+          "value": "",
+          "description": "Filter by subject ID",
+          "disabled": true
+        },
+        {
+          "name": "appId",
+          "value": "CORR-12356",
+          "description": "Filter by application ID"
+        },
+        {
+          "name": "correlationId",
+          "value": "",
+          "description": "Filter by correlation ID",
+          "disabled": true
+        },
+        {
+          "name": "traceId",
+          "value": "",
+          "description": "Filter by trace ID",
+          "disabled": true
+        },
+        {
+          "name": "fromDate",
+          "value": "",
+          "description": "Filter from date (ISO format: 2025-08-29T00:00:00Z)",
+          "disabled": true
+        },
+        {
+          "name": "toDate",
+          "value": "",
+          "description": "Filter to date (ISO format: 2025-08-29T23:59:59Z)",
+          "disabled": true
+        },
+        {
+          "name": "page",
+          "value": "0",
+          "description": "Page number"
+        },
+        {
+          "name": "size",
+          "value": "10",
+          "description": "Items per page"
+        },
+        {
+          "name": "sortBy",
+          "value": "occurred_at_utc",
+          "description": "Sort field"
+        },
+        {
+          "name": "sortOrder",
+          "value": "desc",
+          "description": "Sort order"
+        }
+      ],
+      "headers": [
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693338970000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_search_failures",
+      "parentId": "fld_audit_sink",
+      "modified": 1693339080000,
+      "created": 1693339080000,
+      "url": "{{ _.base_url }}/audit/events/search",
+      "name": "Search Events - Failures Only",
+      "description": "Find all failed audit events",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "name": "outcome",
+          "value": "FAILURE",
+          "description": "Show only failures"
+        },
+        {
+          "name": "size",
+          "value": "20",
+          "description": "Items per page"
+        },
+        {
+          "name": "sortBy",
+          "value": "occurred_at_utc",
+          "description": "Sort by occurrence time"
+        },
+        {
+          "name": "sortOrder",
+          "value": "desc",
+          "description": "Newest first"
+        }
+      ],
+      "headers": [
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693338960000,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_audit_sink",
+      "parentId": "wrk_audit_sink",
+      "modified": 1693339000000,
+      "created": 1693339000000,
+      "name": "Audit Sink API",
+      "description": "Audit log ingestion and retrieval endpoints",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1693339000000,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_audit_sink",
+      "parentId": null,
+      "modified": 1693338990000,
+      "created": 1693338990000,
+      "name": "Audit Sink Service",
+      "description": "API testing for audit sink microservice",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_base",
+      "parentId": "wrk_audit_sink",
+      "modified": 1693339100000,
+      "created": 1693339100000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8081",
+        "api_key": "dev-key"
+      },
+      "dataPropertyOrder": {
+        "&": ["base_url", "api_key"]
+      },
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1693339100000,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_cookies",
+      "parentId": "wrk_audit_sink",
+      "modified": 1693339110000,
+      "created": 1693339110000,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    }
+  ]
+}
