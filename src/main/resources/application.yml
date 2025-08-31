@@ -24,6 +24,11 @@ management:
       exposure:
         include: health,info,metrics,prometheus
 
+logging:
+  level:
+    dev.controlplane.auditsink: DEBUG
+    org.springframework.jdbc: DEBUG
+
 audit:
   auth:
     # set a random string here in prod and require clients to send X-Api-Key

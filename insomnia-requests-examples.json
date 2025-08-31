@@ -1,0 +1,136 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-08-30T16:20:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "req_ingest_test1",
+      "parentId": "fld_dedup_tests",
+      "modified": 1693339200000,
+      "created": 1693339200000,
+      "url": "{{ _.base_url }}/audit/events",
+      "name": "Test 1: First Attach Action",
+      "description": "Attach document - should succeed",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"schemaVersion\": 1,\n  \"producerId\": \"frontend-app\",\n  \"occurredAtUtc\": \"2025-08-30T16:00:00.000Z\",\n  \"action\": \"ATTACH_DOCUMENT\",\n  \"outcome\": \"SUCCESS\",\n  \"subject\": {\n    \"type\": \"document\",\n    \"id\": \"doc_12345\"\n  },\n  \"actor\": {\n    \"id\": \"user_jane\",\n    \"type\": \"USER\",\n    \"roles\": [\"editor\"],\n    \"tenantId\": \"tenant_abc\"\n  },\n  \"context\": {\n    \"appId\": \"doc-manager\",\n    \"trackId\": \"track_001\"\n  },\n  \"channel\": \"web\",\n  \"correlationId\": \"corr-attach-001\",\n  \"payload\": {\n    \"argsRedacted\": {\n      \"documentId\": \"doc_12345\",\n      \"targetId\": \"project_789\"\n    },\n    \"resultRedacted\": {\n      \"attachmentId\": \"att_001\",\n      \"status\": \"attached\"\n    }\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339200000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_ingest_test2",
+      "parentId": "fld_dedup_tests",
+      "modified": 1693339210000,
+      "created": 1693339210000,
+      "url": "{{ _.base_url }}/audit/events",
+      "name": "Test 2: Duplicate Request (Same Timestamp)",
+      "description": "Exact same request - should be deduped",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"schemaVersion\": 1,\n  \"producerId\": \"frontend-app\",\n  \"occurredAtUtc\": \"2025-08-30T16:00:00.000Z\",\n  \"action\": \"ATTACH_DOCUMENT\",\n  \"outcome\": \"SUCCESS\",\n  \"subject\": {\n    \"type\": \"document\",\n    \"id\": \"doc_12345\"\n  },\n  \"actor\": {\n    \"id\": \"user_jane\",\n    \"type\": \"USER\",\n    \"roles\": [\"editor\"],\n    \"tenantId\": \"tenant_abc\"\n  },\n  \"context\": {\n    \"appId\": \"doc-manager\",\n    \"trackId\": \"track_001\"\n  },\n  \"channel\": \"web\",\n  \"correlationId\": \"corr-attach-001\",\n  \"payload\": {\n    \"argsRedacted\": {\n      \"documentId\": \"doc_12345\",\n      \"targetId\": \"project_789\"\n    },\n    \"resultRedacted\": {\n      \"attachmentId\": \"att_001\",\n      \"status\": \"attached\"\n    }\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339190000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_ingest_test3",
+      "parentId": "fld_dedup_tests",
+      "modified": 1693339220000,
+      "created": 1693339220000,
+      "url": "{{ _.base_url }}/audit/events",
+      "name": "Test 3: Detach Action",
+      "description": "Detach same document - should succeed (different action)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"schemaVersion\": 1,\n  \"producerId\": \"frontend-app\",\n  \"occurredAtUtc\": \"2025-08-30T16:01:00.000Z\",\n  \"action\": \"DETACH_DOCUMENT\",\n  \"outcome\": \"SUCCESS\",\n  \"subject\": {\n    \"type\": \"document\",\n    \"id\": \"doc_12345\"\n  },\n  \"actor\": {\n    \"id\": \"user_jane\",\n    \"type\": \"USER\",\n    \"roles\": [\"editor\"],\n    \"tenantId\": \"tenant_abc\"\n  },\n  \"context\": {\n    \"appId\": \"doc-manager\",\n    \"trackId\": \"track_002\"\n  },\n  \"channel\": \"web\",\n  \"correlationId\": \"corr-detach-001\",\n  \"payload\": {\n    \"argsRedacted\": {\n      \"documentId\": \"doc_12345\",\n      \"targetId\": \"project_789\"\n    },\n    \"resultRedacted\": {\n      \"attachmentId\": \"att_001\",\n      \"status\": \"detached\"\n    }\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339180000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "req_ingest_test4",
+      "parentId": "fld_dedup_tests",
+      "modified": 1693339230000,
+      "created": 1693339230000,
+      "url": "{{ _.base_url }}/audit/events",
+      "name": "Test 4: Re-attach Action",
+      "description": "Attach again - should succeed (different timestamp/correlation)",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"schemaVersion\": 1,\n  \"producerId\": \"frontend-app\",\n  \"occurredAtUtc\": \"2025-08-30T16:02:00.000Z\",\n  \"action\": \"ATTACH_DOCUMENT\",\n  \"outcome\": \"SUCCESS\",\n  \"subject\": {\n    \"type\": \"document\",\n    \"id\": \"doc_12345\"\n  },\n  \"actor\": {\n    \"id\": \"user_jane\",\n    \"type\": \"USER\",\n    \"roles\": [\"editor\"],\n    \"tenantId\": \"tenant_abc\"\n  },\n  \"context\": {\n    \"appId\": \"doc-manager\",\n    \"trackId\": \"track_003\"\n  },\n  \"channel\": \"web\",\n  \"correlationId\": \"corr-attach-002\",\n  \"payload\": {\n    \"argsRedacted\": {\n      \"documentId\": \"doc_12345\",\n      \"targetId\": \"project_789\"\n    },\n    \"resultRedacted\": {\n      \"attachmentId\": \"att_002\",\n      \"status\": \"attached\"\n    }\n  }\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "X-Api-Key",
+          "value": "{{ _.api_key }}"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1693339170000,
+      "isPrivate": false,
+      "_type": "request"
+    },
+    {
+      "_id": "fld_dedup_tests",
+      "parentId": "wrk_audit_sink",
+      "modified": 1693339150000,
+      "created": 1693339150000,
+      "name": "Deduplication Tests",
+      "description": "Test scenarios for the new request-level deduplication",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1693339150000,
+      "_type": "request_group"
+    }
+  ]
+}

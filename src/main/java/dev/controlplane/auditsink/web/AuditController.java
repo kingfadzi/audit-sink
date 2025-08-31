@@ -8,16 +8,25 @@ import dev.controlplane.auditsink.service.AuditIngestService;
 import dev.controlplane.auditsink.service.AuditQueryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/audit")
 public class AuditController {
+    
+    private static final Logger log = LoggerFactory.getLogger(AuditController.class);
 
     private final AuditIngestService ingestService;
     private final AuditQueryService queryService;
@@ -29,11 +38,21 @@ public class AuditController {
 
     @PostMapping("/events")
     public ResponseEntity<IngestResponse> ingest(@Valid @RequestBody AuditEventRequest req, HttpServletRequest http) {
-        IngestResponse resp = ingestService.ingest(req, http);
-        if (resp.deduped()) {
-            return ResponseEntity.ok(resp);
-        } else {
-            return ResponseEntity.accepted().body(resp);
+        try {
+            log.info("Received audit event request: action={}, producerId={}, clientIP={}", 
+                    req.action(), req.producerId(), clientIp(http));
+            
+            IngestResponse resp = ingestService.ingest(req, http);
+            
+            HttpStatus status = resp.deduped() ? HttpStatus.OK : HttpStatus.ACCEPTED;
+            log.info("Audit event processed: eventId={}, deduped={}, status={}", 
+                    resp.eventId(), resp.deduped(), status.value());
+            
+            return ResponseEntity.status(status).body(resp);
+        } catch (Exception ex) {
+            log.error("Error processing audit event: action={}, producerId={}, error={}", 
+                    req.action(), req.producerId(), ex.getMessage(), ex);
+            throw ex;
         }
     }
 
@@ -83,5 +102,30 @@ public class AuditController {
             page, size, sortBy, sortOrder
         );
         return ResponseEntity.ok(response);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        StringBuilder errors = new StringBuilder("Validation failed: ");
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            errors.append(error.getField()).append(" ").append(error.getDefaultMessage()).append("; ");
+        }
+        
+        log.warn("Validation error in audit event request: {}", errors.toString());
+        return ResponseEntity.badRequest()
+                .body(Map.of("error", "validation_failed", "message", errors.toString()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleGenericException(Exception ex) {
+        log.error("Unexpected error in audit controller: {}", ex.getMessage(), ex);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "internal_error", "message", "An internal error occurred"));
+    }
+
+    private String clientIp(HttpServletRequest http) {
+        String xff = http.getHeader("X-Forwarded-For");
+        if (xff != null && !xff.isBlank()) return xff.split(",")[0].trim();
+        return http.getRemoteAddr();
     }
 }
